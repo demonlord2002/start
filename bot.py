@@ -1,3 +1,4 @@
+import random
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -16,43 +17,51 @@ bot = Client(
 CHANNEL_LINK = "https://t.me/+1A5SxtZArxkxZDVl"
 START_IMAGE = "https://graph.org/file/ef913ae481b78227404ec-c2fe746f3a25c938ba.jpg"
 
-@bot.on_message(filters.command("start") & filters.private)
+# List of random emojis
+REACTION_EMOJIS = ["🔥", "😎", "💥", "❤️", "🎯", "⚡", "🤩", "🥳", "💎"]
+
+@bot.on_message(filters.command("start"))
 async def start_handler(client, message):
+    # Pick a random emoji
+    random_emoji = random.choice(REACTION_EMOJIS)
+
+    # Add emoji in caption for private chats
+    emoji_suffix = f" {random_emoji}" if message.chat.type == "private" else ""
+
     start_text = (
-        "╭───────────────────╮\n"
-        "    ✨ **𝙲𝚘𝚘𝚕𝚒𝚎 𝙼𝚘𝚟𝚒𝚎 𝙸𝚜 𝙷𝚎𝚛𝚎!** ✨\n"
-        "╰───────────────────╯\n\n"
-        "> 🍿 **உங்களுக்காக 𝙵𝚒𝚛𝚜𝚝 𝚄𝚙𝚍𝚊𝚝𝚎 வந்தாச்சு!**\n"
-        "> 🎬 *Coolie* படம் **Direct Link** ரெடியா இருக்கு...\n"
-        "> ⚡ **டவுன்லோட்** பண்ண ரெடி ஆ இருங்க!\n"
-        "> 📢 *Upcoming Movies* updates **Miss பண்ணாதீங்க!**\n"
-        "> 🔥 **𝙿𝚛𝚒𝚖𝚎𝚄𝚙𝚕𝚘𝚊𝚍𝚣 𝙵𝚒𝚛𝚜𝚝 𝚁𝚎𝚕𝚎𝚊𝚜𝚎!**\n"
+        f"<blockquote><b>╭───────────────────╮\n"
+        f"✨ 𝙲𝚘𝚘𝚕𝚒𝚎 𝙼𝚘𝚟𝚒𝚎 𝙸𝚜 𝙷𝚎𝚛𝚎! ✨{emoji_suffix}\n"
+        f"╰───────────────────╯</b></blockquote>\n\n"
+
+        "<blockquote>🍿 <b>உங்களுக்காக 𝙵𝚒𝚛𝚜𝚝 𝚄𝚙𝚍𝚊𝚝𝚎 வந்தாச்சு!</b></blockquote>\n"
+        "<blockquote>🎬 <i>Coolie</i> படம் <b>Direct Link</b> ரெடியா இருக்கு...</blockquote>\n"
+        "<blockquote>⚡ <b>டவுன்லோட்</b> பண்ண ரெடி ஆ இருங்க!</blockquote>\n"
+        "<blockquote>📢 <i>Upcoming Movies</i> updates <b>Miss பண்ணாதீங்க!</b></blockquote>\n"
+        "<blockquote>🔥 <b>𝙿𝚛𝚒𝚖𝚎𝚄𝚙𝚕𝚘𝚊𝚍𝚣 𝙵𝚒𝚛𝚜𝚝 𝚁𝚎𝚕𝚎𝚊𝚜𝚎!</b></blockquote>"
     )
 
     buttons = InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton("📥 𝗖𝗹𝗶𝗰𝗸 𝗧𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱", url=CHANNEL_LINK)
-        ],
-        [
-            InlineKeyboardButton("🎬 𝗨𝗽𝗰𝗼𝗺𝗶𝗻𝗴 𝗠𝗼𝘃𝗶𝗲𝘀", url=CHANNEL_LINK)
-        ]
+        [InlineKeyboardButton("📥 𝗖𝗹𝗶𝗰𝗸 𝗧𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("🎬 𝗨𝗽𝗰𝗼𝗺𝗶𝗻𝗴 𝗠𝗼𝘃𝗶𝗲𝘀", url=CHANNEL_LINK)]
     ])
 
     sent = await message.reply_photo(
         photo=START_IMAGE,
         caption=start_text,
+        parse_mode="html",
         reply_markup=buttons
     )
 
-    # Add a 🔥 reaction to the bot's own message (Pyrogram v2.0+)
-    try:
-        await bot.send_reaction(
-            chat_id=message.chat.id,
-            message_id=sent.id,
-            emoji="🔥"
-        )
-    except:
-        pass  # Ignore if reactions aren't supported
+    # If not a private chat, try adding actual Telegram reaction
+    if message.chat.type != "private":
+        try:
+            await bot.send_reaction(
+                chat_id=message.chat.id,
+                message_id=sent.id,
+                emoji=random_emoji
+            )
+        except:
+            pass
 
 print("Bot is running...")
 bot.run()
