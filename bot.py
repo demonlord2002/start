@@ -1,8 +1,8 @@
+from pyrogram.enums import ParseMode  # ✅ Import this
 import random
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-# Replace with your API credentials
 API_ID = 22201946
 API_HASH = "f4e7f0de47a09671133ecafa6920ebbe"
 BOT_TOKEN = "7945536495:AAGQhAa6BDfg8kgQ77Ga4Jsh4arODyHrhb4"
@@ -12,7 +12,7 @@ bot = Client(
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=BOT_TOKEN,
-    parse_mode="html"  # ✅ Set parse mode here (lowercase is fine)
+    parse_mode=ParseMode.HTML  # ✅ Use enum instead of string
 )
 
 CHANNEL_LINK = "https://t.me/+1A5SxtZArxkxZDVl"
