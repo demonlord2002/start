@@ -12,7 +12,7 @@ bot = Client(
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=BOT_TOKEN,
-    parse_mode=ParseMode.HTML   # Use enum for Pyrogram v2+
+    parse_mode=ParseMode.HTML
 )
 
 CHANNEL_LINK = "https://t.me/+1A5SxtZArxkxZDVl"
@@ -23,15 +23,11 @@ REACTION_EMOJIS = ["🔥", "😎", "💥", "❤️", "🎯", "⚡", "🤩", "�
 @bot.on_message(filters.command("start"))
 async def start_handler(client, message):
     random_emoji = random.choice(REACTION_EMOJIS)
-    emoji_suffix = f" {random_emoji}" if message.chat.type == "private" else ""
 
     start_text = (
-        # banner kept exact using <pre>
         "<pre>╭───────────────────╮\n"
-        f"✨ 𝙲𝚘𝚘𝚕𝚒𝚎 𝙼𝚘𝚟𝚒𝚎 𝙸𝚜 𝙷𝚎𝚛𝚎! ✨{emoji_suffix}\n"
+        f"✨ 𝙲𝚘𝚘𝚕𝚒𝚎 𝙼𝚘𝚟𝚒𝚎 𝙸𝚜 𝙷𝚎𝚛𝚎! ✨ {random_emoji}\n"
         "╰───────────────────╯</pre>\n\n"
-
-        # emulate blockquote with left bar (▌). Use HTML tags for bold/italic.
         "▌ 🍿 <b>உங்களுக்காக 𝙵𝚒𝚛𝚜𝚝 𝚄𝚙𝚍𝚊𝚝𝚎 வந்தாச்சு!</b>\n"
         "▌ 🎬 <i>Coolie</i> படம் <b>Direct Link</b> ரெடியா இருக்கு...\n"
         "▌ ⚡ <b>டவுன்லோட்</b> பண்ண ரெடி ஆ இருங்க!\n"
@@ -44,16 +40,14 @@ async def start_handler(client, message):
         [InlineKeyboardButton("🎬 𝗨𝗽𝗰𝗼𝗺𝗶𝗻𝗴 𝗠𝗼𝘃𝗶𝗲𝘀", url=CHANNEL_LINK)]
     ])
 
+    # Send main start message
     sent = await message.reply_photo(
         photo=START_IMAGE,
         caption=start_text,
         reply_markup=buttons
     )
 
-    if message.chat.type != "private":
-        try:
-            await bot.send_reaction(chat_id=message.chat.id, message_id=sent.id, emoji=random_emoji)
-        except:
-            pass
+    # Fake a "reaction" in private chat by sending just the emoji
+    await message.reply_text(random_emoji)
 
 bot.run()
