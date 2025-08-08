@@ -1,4 +1,4 @@
-from pyrogram.enums import ParseMode  # ✅ Import this
+from pyrogram.enums import ParseMode
 import random
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -12,7 +12,7 @@ bot = Client(
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=BOT_TOKEN,
-    parse_mode=ParseMode.HTML  # ✅ Use enum instead of string
+    parse_mode=ParseMode.HTML   # Use enum for Pyrogram v2+
 )
 
 CHANNEL_LINK = "https://t.me/+1A5SxtZArxkxZDVl"
@@ -26,14 +26,17 @@ async def start_handler(client, message):
     emoji_suffix = f" {random_emoji}" if message.chat.type == "private" else ""
 
     start_text = (
-        f"<blockquote><b><u>╭───────────────────╮\n"
+        # banner kept exact using <pre>
+        "<pre>╭───────────────────╮\n"
         f"✨ 𝙲𝚘𝚘𝚕𝚒𝚎 𝙼𝚘𝚟𝚒𝚎 𝙸𝚜 𝙷𝚎𝚛𝚎! ✨{emoji_suffix}\n"
-        f"╰───────────────────╯</u></b></blockquote>\n\n"
-        f"<blockquote>🍿 <b>உங்களுக்காக 𝙵𝚒𝚛𝚜𝚝 𝚄𝚙𝚍𝚊𝚝𝚎 வந்தாச்சு!</b></blockquote>\n"
-        f"<blockquote>🎬 <i>Coolie</i> படம் <b>Direct Link</b> ரெடியா இருக்கு...</blockquote>\n"
-        f"<blockquote>⚡ <b>டவுன்லோட்</b> பண்ண ரெடி ஆ இருங்க!</blockquote>\n"
-        f"<blockquote>📢 <i>Upcoming Movies</i> updates <b>Miss பண்ணாதீங்க!</b></blockquote>\n"
-        f"<blockquote>🔥 <b>𝙿𝚛𝚒𝚖𝚎𝚄𝚙𝚕𝚘𝚊𝚍𝚣 𝙵𝚒𝚛𝚜𝚝 𝚁𝚎𝚕𝚎𝚊𝚜𝚎!</b></blockquote>"
+        "╰───────────────────╯</pre>\n\n"
+
+        # emulate blockquote with left bar (▌). Use HTML tags for bold/italic.
+        "▌ 🍿 <b>உங்களுக்காக 𝙵𝚒𝚛𝚜𝚝 𝚄𝚙𝚍𝚊𝚝𝚎 வந்தாச்சு!</b>\n"
+        "▌ 🎬 <i>Coolie</i> படம் <b>Direct Link</b> ரெடியா இருக்கு...\n"
+        "▌ ⚡ <b>டவுன்லோட்</b> பண்ண ரெடி ஆ இருங்க!\n"
+        "▌ 📢 <i>Upcoming Movies</i> updates <b>Miss பண்ணாதீங்க!</b>\n"
+        "▌ 🔥 <b>𝙿𝚛𝚒𝚖𝚎𝚄𝚙𝚕𝚘𝚊𝚍𝚣 𝙵𝚒𝚛𝚜𝚝 𝚁𝚎𝚕𝚎𝚊𝚜𝚎!</b>"
     )
 
     buttons = InlineKeyboardMarkup([
@@ -49,13 +52,8 @@ async def start_handler(client, message):
 
     if message.chat.type != "private":
         try:
-            await bot.send_reaction(
-                chat_id=message.chat.id,
-                message_id=sent.id,
-                emoji=random_emoji
-            )
+            await bot.send_reaction(chat_id=message.chat.id, message_id=sent.id, emoji=random_emoji)
         except:
             pass
 
-print("Bot is running...")
 bot.run()
