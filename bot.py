@@ -29,15 +29,15 @@ async def start_handler(client, message):
     emoji_suffix = f" {random_emoji}" if message.chat.type == "private" else ""
 
     start_text = (
-        f"<blockquote><b>╭───────────────────╮\n"
+        f"<blockquote><b><u>╭───────────────────╮\n"
         f"✨ 𝙲𝚘𝚘𝚕𝚒𝚎 𝙼𝚘𝚟𝚒𝚎 𝙸𝚜 𝙷𝚎𝚛𝚎! ✨{emoji_suffix}\n"
-        f"╰───────────────────╯</b></blockquote>\n\n"
+        f"╰───────────────────╯</u></b></blockquote>\n\n"
 
-        "<blockquote>🍿 <b>உங்களுக்காக 𝙵𝚒𝚛𝚜𝚝 𝚄𝚙𝚍𝚊𝚝𝚎 வந்தாச்சு!</b></blockquote>\n"
-        "<blockquote>🎬 <i>Coolie</i> படம் <b>Direct Link</b> ரெடியா இருக்கு...</blockquote>\n"
-        "<blockquote>⚡ <b>டவுன்லோட்</b> பண்ண ரெடி ஆ இருங்க!</blockquote>\n"
-        "<blockquote>📢 <i>Upcoming Movies</i> updates <b>Miss பண்ணாதீங்க!</b></blockquote>\n"
-        "<blockquote>🔥 <b>𝙿𝚛𝚒𝚖𝚎𝚄𝚙𝚕𝚘𝚊𝚍𝚣 𝙵𝚒𝚛𝚜𝚝 𝚁𝚎𝚕𝚎𝚊𝚜𝚎!</b></blockquote>"
+        f"<blockquote>🍿 <b>உங்களுக்காக 𝙵𝚒𝚛𝚜𝚝 𝚄𝚙𝚍𝚊𝚝𝚎 வந்தாச்சு!</b></blockquote>\n"
+        f"<blockquote>🎬 <i>Coolie</i> படம் <b>Direct Link</b> ரெடியா இருக்கு...</blockquote>\n"
+        f"<blockquote>⚡ <b>டவுன்லோட்</b> பண்ண ரெடி ஆ இருங்க!</blockquote>\n"
+        f"<blockquote>📢 <i>Upcoming Movies</i> updates <b>Miss பண்ணாதீங்க!</b></blockquote>\n"
+        f"<blockquote>🔥 <b>𝙿𝚛𝚒𝚖𝚎𝚄𝚙𝚕𝚘𝚊𝚍𝚣 𝙵𝚒𝚛𝚜𝚝 𝚁𝚎𝚕𝚎𝚊𝚜𝚎!</b></blockquote>"
     )
 
     buttons = InlineKeyboardMarkup([
@@ -48,7 +48,7 @@ async def start_handler(client, message):
     sent = await message.reply_photo(
         photo=START_IMAGE,
         caption=start_text,
-        parse_mode="html",
+        parse_mode="HTML",  # ✅ Must be uppercase
         reply_markup=buttons
     )
 
