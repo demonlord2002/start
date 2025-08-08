@@ -11,28 +11,24 @@ bot = Client(
     "CoolieMovieBot",
     api_id=API_ID,
     api_hash=API_HASH,
-    bot_token=BOT_TOKEN
+    bot_token=BOT_TOKEN,
+    parse_mode="html"  # ✅ Set parse mode here (lowercase is fine)
 )
 
 CHANNEL_LINK = "https://t.me/+1A5SxtZArxkxZDVl"
 START_IMAGE = "https://graph.org/file/ef913ae481b78227404ec-c2fe746f3a25c938ba.jpg"
 
-# List of random emojis
 REACTION_EMOJIS = ["🔥", "😎", "💥", "❤️", "🎯", "⚡", "🤩", "🥳", "💎"]
 
 @bot.on_message(filters.command("start"))
 async def start_handler(client, message):
-    # Pick a random emoji
     random_emoji = random.choice(REACTION_EMOJIS)
-
-    # Add emoji in caption for private chats
     emoji_suffix = f" {random_emoji}" if message.chat.type == "private" else ""
 
     start_text = (
         f"<blockquote><b><u>╭───────────────────╮\n"
         f"✨ 𝙲𝚘𝚘𝚕𝚒𝚎 𝙼𝚘𝚟𝚒𝚎 𝙸𝚜 𝙷𝚎𝚛𝚎! ✨{emoji_suffix}\n"
         f"╰───────────────────╯</u></b></blockquote>\n\n"
-
         f"<blockquote>🍿 <b>உங்களுக்காக 𝙵𝚒𝚛𝚜𝚝 𝚄𝚙𝚍𝚊𝚝𝚎 வந்தாச்சு!</b></blockquote>\n"
         f"<blockquote>🎬 <i>Coolie</i> படம் <b>Direct Link</b> ரெடியா இருக்கு...</blockquote>\n"
         f"<blockquote>⚡ <b>டவுன்லோட்</b> பண்ண ரெடி ஆ இருங்க!</blockquote>\n"
@@ -48,11 +44,9 @@ async def start_handler(client, message):
     sent = await message.reply_photo(
         photo=START_IMAGE,
         caption=start_text,
-        parse_mode="HTML",  # ✅ Must be uppercase
         reply_markup=buttons
     )
 
-    # If not a private chat, try adding actual Telegram reaction
     if message.chat.type != "private":
         try:
             await bot.send_reaction(
