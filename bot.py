@@ -15,7 +15,7 @@ bot = Client(
     parse_mode=ParseMode.HTML
 )
 
-CHANNEL_LINK = "https://t.me/+eFNi626WCxJiZmNl"
+CHANNEL_LINK = "https://t.me/+WkEkiXTAoJM3OTA1"
 START_IMAGE = "https://graph.org/file/ef913ae481b78227404ec-c2fe746f3a25c938ba.jpg"
 
 REACTION_EMOJIS = ["🔥", "😎", "💥", "❤️", "🎯", "⚡", "🤩", "🥳", "💎"]
